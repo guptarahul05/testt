@@ -1,19 +1,21 @@
-// const Joi = require('joi');
-// const schema =  require('../../validationSchemas/schema');
+const identityService = require('./identity.service');
 
-exports.login = (req, res, next) => {
-  const data = { ...req.body };
-  //   Joi.validate(data, schema, { abortEarly: false })
-  //     .then(r => res.json({ messagesuccess: r }))
-  //     .catch(e => {
-  //       const errors = errorCheck(e.details);
-  //       res.json({
-  //         messageerror: e
-  //         //  errors
-  //       });
-  //     });
-  res.json({ message: data });
+exports.register = async (req, res, next) => {
+  const userObj = { ...req.body };
+  const response = await identityService.registerUser(userObj);
+  const status = response.isSuccessful ? 200 : 500;
+  res.status(status).json(response);
 };
+exports.login = async (req, res, next) => {
+  const username = req.body.username;
+  const hashedPassword = req.body.password;
+  const response = await identityService.login(username, hashedPassword);
+  const status = response.isSuccessful ? 200 : 500;
+  res.status(status).json(response);
+};
+exports.test = (req,res,next)=>{
+  res.status(200).json(req.body);
+}
 function errorCheck(errors) {
   const errorArray = [];
   errors.forEach(e => {
@@ -26,19 +28,3 @@ function errorCheck(errors) {
   });
   return errorArray;
 }
-/*
-{
-    "messageerror": [
-        {
-            "path": "email",
-            "message": "email is in valid",
-            "value": "rahul"
-        },
-        {
-            "path": "password",
-            "message": "password cannot be empty",
-            "value": ""
-        }
-    ]
-}
-*/
