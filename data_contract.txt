@@ -1,0 +1,219 @@
+####################################################################################
+
+1. split pdf into images if user uploads 
+
+	Apilink :- 
+			pdfSplit
+
+	Input :-
+		{
+			pdf file
+		}
+
+	Output :-
+		{
+			'success':True, 
+			'data': 
+			{
+				'paths':['xcdsd','sdfre'],
+				'count': 2
+			}
+		}
+
+	Output :-
+		{
+			'success':False,
+			'error': 
+			{
+				'message': message
+			}
+		}
+
+#####################################################################################
+
+2. Send the first image of the session to the server and get the image with 
+highlighted boxes to be displayed to the client
+
+	Apilink :- 
+			sessionStart
+
+	Input :-
+		type :- formData:
+			{
+				file:file,
+				data: {
+					userId: xyzabc             #type = string
+					pageNo : 1				   #type = int
+					checkForTable : False      #type = Boolean
+				}
+			}
+
+	Output :-
+		{
+			'success':True,  
+			'data':
+			{        
+				'uniqueId':'abcsd2019-11-00-12-00-11',
+				'dispPath':['img0path','img1path','img2path'],
+				'pt':1.21,
+				'eta': 14.44
+			}
+		}
+
+	Output :-
+		{
+			'success':False,
+			'error': 
+			{
+				'message': message
+			}
+		}
+
+#####################################################################################
+
+3. convert the image file and get the raw json output for verification
+
+	Apilink :- 
+			convert
+	Input :-
+		{	
+			uniqueId : 'abcsd2019-11-00-12-00-11'
+
+			extraInfo : [ { 'pos': [] , 'dtype':1/2/3 ,'htype':1/2/3 ,'alpha':1/2/3 ,'toKeep': True/False,'isBox': True/False ,'isHeader': True/False  } ,....]
+
+			cropInfo : [min_x,min_y,max_x,max_y] or []
+			modeOfOperation : 1/2/3/4		#type = int 
+			gAlpha : 1/2/3					#type = int
+			gDataType : 1/2/3/4/5/6			#type = int
+			indexTemplate : 0/1/2/3/4		#type = int
+			pageNo : 1						#type = int
+			heightDown : 0 					#type = int	
+			writeExcel : False				#type = Boolean
+		}
+
+	Output :-
+		{
+			'success':True,
+			'data': 
+			{
+				'pageNo': 1,
+				'rawJson':{....},
+				'cellCount': 123,
+				'excelPath': 'excelfilepath',
+				'verifyImgPath': 'avghns',
+				'dispPath' :'sfghjk'
+			}
+	Output :-
+			{
+				'success':False,
+				'error': 
+				{
+					'message': message
+				}
+			}
+#####################################################################################
+
+4. if in session with selective header , call this func for 2nd page onwards in 
+a session 
+
+	Apilink :- 
+			inSessionConvert
+
+	Input :-
+		type:- formData
+		{	
+			file : file,
+			data: {
+				pageNo : 2/3/4....
+				uniqueId : 'abcsd2019-11-00-12-00-11'
+			}
+		}
+
+	Output :-
+		{
+			'success':True,
+			'data': 
+			{
+				'pageNo': 2,
+				'rawJson':{....},
+				'cellCount': 123,
+				'excelPath': 'excelfilepath',
+				'verifyImgPath': 'avghns',
+				'dispPath' :'sfghjk'
+			}
+		}
+	Output :-
+		{
+			'success':False,
+			'error': 
+			{
+				'message': message
+			}
+		}
+
+#####################################################################################
+
+5. make excel from raw_updated json/s
+
+	Apilink :- 
+			makeExcel
+
+	Input :-
+		{
+			jsonList : [{...}] # list of rawJson files ordered sequence from 0 to number of pages
+			excelPath : 'dxfgh.xlsx' #final output to be stored
+			uniqueId : 'abcsd2019-11-00-12-00-11'
+		}
+
+	Output :-
+		{
+			'success':True,
+			'data':
+			{ 
+				'excelPath': 'final.xlsx',
+				'finalPdfPath': 'final.pdf',
+				'totalPageCount': 3,
+				'totalCellCount': 123
+			}
+		}
+
+	Output :-
+		{
+			'success':False,
+			'error': 
+			{
+				'message': message
+			}
+		}
+
+#####################################################################################
+
+6. close the session with option of keeping files at server or not
+
+	Apilink :- 
+			sessionEnd
+
+	Input :-
+		{	userId: 'rahul'
+			uniqueId : 'abcsd2019-11-00-12-00-11'
+			keepFilesOnServer : 1/2/3
+		}
+
+	Output :-
+		{
+			'success':True,
+			'data': {}
+		}
+	
+	Output :-
+		{
+			'success':False,
+			'error': 
+			{
+				'message': message
+			}
+		}
+
+
+#####################################################################################
+

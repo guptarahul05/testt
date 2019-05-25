@@ -36,6 +36,11 @@ User.init(
       validate: {
         isIn: [[true, false, undefined, '']]
       }
+    },
+    activeLogin:{
+      type:Sequelize.INTEGER,
+      allowNull:null,
+      defaultValue:0,
     }
   },
   { sequelize, modelName: 'user' }
